@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  
+  <title>Frontend Mentor | Age Calculator App</title>
+  <style>
+
+    @font-face {
+      font-family: Poppins-Regular;
+      src: url(./assets/fonts/Poppins-Regular.ttf);
+    }
+    @font-face {
+      font-family: Poppins-Italic;
+      src: url(./assets/fonts/Poppins-Italic.ttf);
+    }
+    @font-face {
+      font-family: Poppins-ExtraBoldItalic;
+      src: url(./assets/fonts/Poppins-ExtraBoldItalic.ttf);
+    }
+    @font-face {
+      font-family: Poppins-ExtraBold;
+      src: url(./assets/fonts/Poppins-ExtraBold.ttf);
+    }
+    @font-face {
+      font-family: Poppins-BoldItalic;
+      src: url(./assets/fonts/Poppins-BoldItalic.ttf);
+    }
+    @font-face {
+      font-family: Poppins-Bold;
+      src: url(./assets/fonts/Poppins-Bold.ttf);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Poppins-Regular;
+      background-color: #f0f0f0;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      border-top-left-radius: 25px;
+      border-top-right-radius: 25px;
+      border-bottom-left-radius: 25px;
+      border-bottom-right-radius: 90px;
+      background-color: #ffffff;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 350px;
+    }
+    
+    .form-top {
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid #e3e3e3;
+      padding: 4em 0;
+      position: relative;
+    }
+
+    .inside-container {
+      display: flex;
+      gap: 1em;
+      padding: 0 1.5em;
+    }
+
+    .form-top > .find-btn {
+      border-radius: 50%;
+      border: none;
+      padding: 0.5em;
+      background-color: #864cff;
+      position: absolute;
+      bottom: -18%;
+      left: 43%;
+      cursor: pointer;
+    }
+
+    .find-btn:hover {
+      background-color: #111;
+    }
+
+    .form-input {
+      width: 90px;
+      padding: 0.75em;
+      border-radius: 6px;
+      border: 2px solid #e3e3e3;
+      font-family: Poppins-ExtraBold;
+      font-size: 1.1rem;
+      font-weight: 900;
+      color: #151515;
+    }
+
+    .form-input:focus {
+      border: 2px solid #111;
+    }
+
+    /* .form-input:invalid {
+      border: 2px solid #c99595;
+    } */
+
+    .form-input::placeholder {
+      color: #848484;
+      font-weight: 900;
+    }
+
+    .cont > label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: #848484;
+    }
+
+    .cont > label:invalid {
+      color: #c99595;
+    }
+
+    .result {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1em;
+      margin-top: 3rem;
+      font-family: Poppins-ExtraBoldItalic;
+    }
+
+    h1 {
+      font-size: 3rem;
+    }
+
+    h1 > span {
+      color: #864cff;
+    }
+
+    #error {
+      color: red;
+      font-weight: bold;
+      background-color: #ffe0e0;
+      border: 1px solid red;
+      padding: 10px;
+      border-radius: 5px;
+      width: 375px;  /* Full width of the viewport */
+      text-align: center;
+      position: fixed;  /* Fix the error message to the bottom */
+      bottom: 4%;  /* Align to the bottom */
+      left: 0;  /* Stretch across the entire width */
+      display: none;  /* Hidden by default */
+    }
+
+  </style>
+
+</head>
+<body>
+  <div class="container">
+    <div class="form-top">
+      <div class="inside-container">
+        <div class="cont">
+          <label for="day">DAY</label>
+          <input type="number" min="1" max="31" class="form-input" name="day" id="day" placeholder="DD" required>
+        </div>
+        <div class="cont">
+          <label for="month">MONTH</label>
+          <input type="number" min="1" max="12" class="form-input" name="month" id="month" placeholder="MM" required>
+        </div>
+        <div class="cont">
+          <label for="year">YEAR</label>
+          <input type="number" class="form-input" min="1900" name="year" id="year" placeholder="YYYY" required>
+        </div>
+      </div>
+      <button class="find-btn" id="submitBtn"><svg 
+                                    xmlns="http://www.w3.org/2000/svg" 
+                                    width="46" height="44" 
+                                    viewBox="0 0 46 44">
+                                    <g fill="none" stroke="#FFF" stroke-width="2">
+                                      <path d="M1 22.019C8.333 21.686 23 25.616 23 44M23 44V0M45 22.019C37.667 21.686 23 25.616 23 44"/>
+                                    </g>
+                                  </svg>
+      </button>
+    </div>
+    <div class="result">
+      <h1 class="years"><span id="years">--</span> years</h1>
+      <h1 class="months"><span id="months">--</span> months</h1>
+      <h1 class="days"><span id="days">--</span> days</h1>
+    </div>
+  </div>
+  <p id="error"></p>  
+</body>
+<script>
+  function validateDate() {
+    const day = parseInt(document.getElementById("day").value,10)
+    const month = parseInt(document.getElementById("month").value,10) - 1 // Adjust for zero-index
+    const year = parseInt(document.getElementById("year").value,10)
+    const error = document.getElementById("error")
+
+    if (isNaN(day) || isNaN(month) || isNaN(year)) {
+      error.textContent = 'Please fill all the fields.'
+      error.style.display = "block"
+      return false
+    }   
+    else {
+      return true
+    }
+  }
+
+  document.getElementById("submitBtn").addEventListener("click", function(event) {
+    document.getElementById('years').textContent = "--"
+    document.getElementById('months').textContent = "--"
+    document.getElementById('days').textContent = "--" 
+    if (!validateDate()) {
+      event.preventDefault()// Prevent form submission if date is invalid
+      return 
+    }
+    
+    function calculateAge(birthDate) {
+      const today = new Date() 
+      let years = today.getFullYear() - birthDate.getFullYear()
+      let months = today.getMonth() - birthDate.getMonth()
+      let days = today.getDate() - birthDate.getDate()
+
+      // If days are negative, adjust the month and calculate the correct days
+      if (days < 0) {
+        months--
+        // Get the number of days in the previous month
+        const previousMonth = new Date(today.getFullYear(), today.getMonth(), 0)
+        days += previousMonth.getDate()
+      }
+
+      // If months are negative, adjust the year and month
+      if (months < 0) {
+        years--
+        months += 12
+      }
+
+      return { years, months, days }
+    
+    }  
+
+    const day = parseInt(document.getElementById('day').value,10) 
+    const month = parseInt(document.getElementById('month').value,10)  
+    const year = parseInt(document.getElementById('year').value,10)  
+    const error = document.getElementById("error")
+    const birthDate = new Date(year,month,day)
+    const date = new Date(year, month - 1, day);
+    let check = new Date()
+    // Check if date is valid
+    if (date.getFullYear() !== year || date.getMonth() + 1 !== month || date.getDate() !== day) {
+      error.textContent = 'Invalid date. Please enter a valid day, month, and year.'
+      error.style.display = "block"
+      event.preventDefault()
+      return
+    }
+    // Validation for year
+    if (year > check.getFullYear()) {
+      event.preventDefault();  // Prevent form submission
+      error.textContent = 'Year cannot exceed current year.'
+      error.style.display = 'block' // Show error message
+      return;  // Exit the function
+    }
+    else {
+      document.getElementById('error').style.display = 'none'
+      const age = calculateAge(birthDate)
+      document.getElementById('years').textContent = age.years
+      document.getElementById('months').textContent = age.months
+      document.getElementById('days').textContent = age.days
+    } 
+    }
+);
+  
+</script>
+</html>
