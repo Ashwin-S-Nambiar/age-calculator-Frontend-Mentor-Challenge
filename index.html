@@ -43,6 +43,10 @@
     body {
       font-family: Poppins-Regular;
       background-color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
     .container {
@@ -104,10 +108,6 @@
       border: 2px solid #111;
     }
 
-    /* .form-input:invalid {
-      border: 2px solid #c99595;
-    } */
-
     .form-input::placeholder {
       color: #848484;
       font-weight: 900;
@@ -144,17 +144,17 @@
 
     #error {
       color: red;
+      margin: 0 auto;
       font-weight: bold;
       background-color: #ffe0e0;
       border: 1px solid red;
       padding: 10px;
-      border-radius: 5px;
-      width: 375px;  /* Full width of the viewport */
       text-align: center;
+      border-radius: 5px;
+      width: 370px;  /* Full width of the viewport */
       position: fixed;  /* Fix the error message to the bottom */
-      bottom: 4%;  /* Align to the bottom */
-      left: 0;  /* Stretch across the entire width */
       display: none;  /* Hidden by default */
+      bottom: 3%;
     }
 
   </style>
@@ -213,11 +213,11 @@
   }
 
   document.getElementById("submitBtn").addEventListener("click", function(event) {
-    document.getElementById('years').textContent = "--"
+    document.getElementById('years').textContent = "--" //Setting values to default "--"
     document.getElementById('months').textContent = "--"
     document.getElementById('days').textContent = "--" 
     if (!validateDate()) {
-      event.preventDefault()// Prevent form submission if date is invalid
+      event.preventDefault() // Prevent form submission if date is invalid
       return 
     }
     
@@ -228,6 +228,7 @@
       let days = today.getDate() - birthDate.getDate()
 
       // If days are negative, adjust the month and calculate the correct days
+     
       if (days < 0) {
         months--
         // Get the number of days in the previous month
@@ -252,6 +253,7 @@
     const birthDate = new Date(year,month,day)
     const date = new Date(year, month - 1, day);
     let check = new Date()
+
     // Check if date is valid
     if (date.getFullYear() !== year || date.getMonth() + 1 !== month || date.getDate() !== day) {
       error.textContent = 'Invalid date. Please enter a valid day, month, and year.'
@@ -259,6 +261,7 @@
       event.preventDefault()
       return
     }
+
     // Validation for year
     if (year > check.getFullYear()) {
       event.preventDefault();  // Prevent form submission
@@ -273,6 +276,7 @@
       document.getElementById('months').textContent = age.months
       document.getElementById('days').textContent = age.days
     } 
+
     }
 );
   
